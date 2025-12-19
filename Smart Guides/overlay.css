@@ -1,0 +1,196 @@
+:root {
+  --sg-z: 2147483647;
+  --sg-ruler-size: 24px;
+  --sg-ruler-bg: rgba(20, 20, 20, 0.75);
+  --sg-ruler-fg: rgba(255, 255, 255, 0.8);
+  --sg-line: rgba(0, 153, 255, 0.95);
+  --sg-menu-bg: rgba(30, 30, 30, 0.98);
+  --sg-menu-fg: rgba(255, 255, 255, 0.92);
+  --sg-menu-border: rgba(255, 255, 255, 0.12);
+  --sg-highlight: rgba(0, 153, 255, 0.25);
+  --sg-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+#sg-root {
+  position: fixed;
+  inset: 0;
+  z-index: var(--sg-z);
+  pointer-events: none;
+  font-family: var(--sg-font);
+}
+
+#sg-top-ruler {
+  position: fixed;
+  top: 0;
+  left: var(--sg-ruler-size);
+  right: 0;
+  height: var(--sg-ruler-size);
+  background: var(--sg-ruler-bg);
+  border-bottom: 1px solid rgba(255,255,255,0.14);
+  pointer-events: auto;
+  
+}
+
+#sg-left-ruler {
+  position: fixed;
+  top: var(--sg-ruler-size);
+  left: 0;
+  bottom: 0;
+  width: var(--sg-ruler-size);
+  background: var(--sg-ruler-bg);
+  border-right: 1px solid rgba(255,255,255,0.14);
+  pointer-events: auto;
+}
+
+#sg-origin {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sg-ruler-size);
+  height: var(--sg-ruler-size);
+  background: rgba(10, 10, 10, 0.85);
+  border-right: 1px solid rgba(255,255,255,0.14);
+  border-bottom: 1px solid rgba(255,255,255,0.14);
+  pointer-events: auto;
+}
+
+.sg-guide {
+  position: fixed;
+  pointer-events: auto;
+  background: var(--sg-line);
+}
+
+.sg-guide.sg-vertical {
+  top: 0;
+  bottom: 0;
+  width: 1px;
+}
+
+.sg-guide.sg-horizontal {
+  left: 0;
+  right: 0;
+  height: 1px;
+}
+
+.sg-guide.sg-locked {
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.12);
+}
+
+.sg-guide-handle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  transform: translate(-50%, -50%);
+  background: rgba(255,255,255,0.8);
+  opacity: 0;
+  pointer-events: auto;
+}
+
+.sg-guide:hover .sg-guide-handle {
+  opacity: 1;
+}
+
+.sg-guide.sg-vertical .sg-guide-handle {
+  top: var(--sg-ruler-size);
+  left: 50%;
+}
+
+.sg-guide.sg-horizontal .sg-guide-handle {
+  left: var(--sg-ruler-size);
+  top: 50%;
+}
+
+#sg-menu {
+  position: fixed;
+  min-width: 220px;
+  background: var(--sg-menu-bg);
+  color: var(--sg-menu-fg);
+  border: 1px solid var(--sg-menu-border);
+  border-radius: 10px;
+  padding: 6px;
+  pointer-events: auto;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+  z-index: 2147483647;
+}
+
+.sg-menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: default;
+  user-select: none;
+}
+
+.sg-menu-item:hover {
+  background: rgba(255,255,255,0.07);
+}
+
+.sg-menu-sep {
+  height: 1px;
+  margin: 6px 4px;
+  background: rgba(255,255,255,0.10);
+}
+
+.sg-badge {
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+.sg-colour-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.25);
+}
+html.sg-reserve-space,
+html.sg-reserve-space body {
+  margin: 0 !important;
+  padding-top: var(--sg-ruler-size) !important;
+  padding-left: var(--sg-ruler-size) !important;
+  box-sizing: border-box !important;
+}
+/* Hidden by default */
+#sg-top-ruler,
+#sg-left-ruler,
+#sg-origin {
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+
+/* Reveal when active, or locked */
+#sg-root.sg-rulers-active #sg-top-ruler,
+#sg-root.sg-rulers-active #sg-left-ruler,
+#sg-root.sg-rulers-active #sg-origin,
+#sg-root.sg-rulers-locked #sg-top-ruler,
+#sg-root.sg-rulers-locked #sg-left-ruler,
+#sg-root.sg-rulers-locked #sg-origin {
+  opacity: 1;
+}
+
+/* Lock button */
+#sg-lock {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+  transform: translateY(0.5px); /* tiny optical correction */
+}
+#sg-lock:hover {
+  background: rgba(255,255,255,0.06);
+}
+
+#sg-root:not(.sg-rulers-active):not(.sg-rulers-locked) {
+  pointer-events: none;
+}
+#sg-origin,
+#sg-lock {
+  pointer-events: auto;
+}

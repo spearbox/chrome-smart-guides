@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "Smart Guides",
+  "version": "0.1.0",
+  "description": "Adobe-style Smart Guides, Rulers + draggable guides for any webpage.",
+  "permissions": ["storage"],
+  "host_permissions": ["<all_urls>"],
+  "action": {
+    "default_title": "Smart Guides"
+  },
+  "background": {
+    "service_worker": "service_worker.js"
+  },
+  "commands": {
+    "toggle-guides": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+G",
+        "mac": "Command+Shift+G"
+      },
+      "description": "Toggle guides overlay"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["overlay.css"],
+      "run_at": "document_idle"
+    }
+  ]
+}
